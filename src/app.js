@@ -18,7 +18,7 @@ config = {
 function initialBalls(){
 	return [
 		{
-			color: [ 255, 0, 0 ],
+			color: [ ballColorR, ballColorG, ballColorB ],
 			x: ballX,
 			y: ballY
 		} 
