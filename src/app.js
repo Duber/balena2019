@@ -43,22 +43,62 @@ interval = 50;
 setInterval(drawBall, interval);
 
 function receiveFromNorth(ball){
-	ball.x = 0;
+	switch(device){
+		case "S":
+			ball.y = 0;
+			return;
+		case "E":
+			ball.x = 0;
+			return;
+		case "W":
+			ball.x = 7;
+			return;
+	}
 	balls.push(ball);
 }
 
 function receiveFromSouth(ball){
-	ball.x = 7;
+	switch(device){
+		case "N":
+			ball.y = 0;
+			return;
+		case "E":
+			ball.x = 7;
+			return;
+		case "W":
+			ball.x = 0;
+			return;
+	}
 	balls.push(ball);
 }
 
 function recieveFromEast(ball){
-	ball.y = 0;
+	switch(device){
+		case "N":
+			ball.x = 7;
+			return;
+		case "S":
+			ball.x = 0;
+			return;
+		case "W":
+			ball.y = 0;
+			return;
+	}
 	balls.push(ball);
 }
 
 function recieveFromWest(ball){
-	ball.y = 7;
+	switch(device){
+		case "N":
+			ball.x = 0;
+			return;
+		case "S":
+			ball.x = 7;
+			return;
+		case "E":
+			ball.y = 0;
+			return;
+	}	
 	balls.push(ball);
 }
 
@@ -147,28 +187,68 @@ oscPort.on('ready', function() {
 				ball.x += vector.x;
 				ball.y += vector.y;
 				if (southExit(ball)){
-					if (device == 'S')
-						sendNorth(ball);
-					else
-						sendSouth(ball);
+					switch(device){
+						case "N":
+							sendSouth(ball);
+							return;
+						case "S":
+							sendNorth(ball);
+							return;
+						case "E":
+							sendWest(ball);
+							return;
+						case "W":
+							sendEast(ball);
+							return;
+					}
 				}
 				else if (northExit(ball)){
-					if (device == 'N')
-						sendSouth(ball);
-					else
-						sendNorth(ball);
+					switch(device){
+						case "N":
+							sendSouth(ball);
+							return;
+						case "S":
+							sendNorth(ball);
+							return;
+						case "E":
+							sendWest(ball);
+							return;
+						case "W":
+							sendEast(ball);
+							return;
+					}
 				}
 				else if (westExit(ball)){
-					if (device == 'W')
-						sendEast(ball);
-					else
-						sendWest(ball);
+					switch(device){
+						case "N":
+							sendEast(ball);
+							return;
+						case "S":
+							sendWest(ball);
+							return;
+						case "E":
+							sendSouth(ball);
+							return;
+						case "W":
+							sendNorth(ball);
+							return;
+					}
 				}
 				else if (eastExit(ball)){
-					if (device == 'E')
-						sendWest(ball);
-					else
-						sendEast(ball);
+					switch(device){
+						case "N":
+							sendWest(ball);
+							return;
+						case "S":
+							sendEast(ball);
+							return;
+						case "E":
+							sendNorth(ball);
+							return;
+						case "W":
+							sendSouth(ball);
+							return;
+					}
 				}
 				else 
 					newBalls.push(ball);
