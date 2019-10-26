@@ -142,16 +142,16 @@ oscPort.on('ready', function() {
 				ball.x += vector.x;
 				ball.y += vector.y;
 				if (ball.x > config.xmax){
-					sendNorth(ball);
-				}
-				else if (ball.x < 0){
 					sendSouth(ball);
 				}
+				else if (ball.x < 0){
+					sendNorth(ball);
+				}
 				else if (ball.y > config.ymax){
-					sendEast(ball);
+					sendWest(ball);
 				}
 				else if (ball.y < 0){
-					sendWest(ball);
+					sendEast(ball);
 				}
 				else 
 					newBalls.push(ball);
