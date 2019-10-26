@@ -64,21 +64,22 @@ const oscPort = new osc.WebSocketPort({
 oscPort.open();
 
 oscPort.on('message', function(oscMsg) {
-	if (oscMsg.args.destination != device){
+	msg = JSON.parse(oscMsg.args[0])
+	if (msg.destination != device){
 		return;
 	}
-	switch(oscMsg.args[0].origin){
+	switch(msg.origin){
 		case "N":
-			receiveFromNorth(oscMsg.args[0].ball)
+			receiveFromNorth(msg.ball)
 			return;
 		case "S":
-			receiveFromSouth(oscMsg.args[0].ball)
+			receiveFromSouth(msg.ball)
 			return;
 		case "E":
-			receiveFromEast(oscMsg.args[0].ball)
+			receiveFromEast(msg.ball)
 			return;
 		case "W":
-			receiveFromWest(oscMsg.args[0].ball)
+			receiveFromWest(msg.ball)
 			return;
 	}
 });
@@ -89,9 +90,12 @@ oscPort.on('ready', function() {
 			address: '/patata',
 			args: [
 				{
-					origin: device,
-					destination: dest,
-					ball: ball
+					type: 's',
+					value: JSON.stringify({
+						origin: device,
+						destination: dest,
+						ball: ball
+					})
 				}
 			]
 		});
