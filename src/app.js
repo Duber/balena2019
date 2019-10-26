@@ -2,7 +2,9 @@
 SenseHat = require('node-sense-hat');
 serverUri = require('./environment').SERVER_URI;
 device = require('./environment').DEVICE;
-ballColor = require('./environment').BALL_COLOR;
+ballColorR = require('./environment').BALL_COLOR_R;
+ballColorG = require('./environment').BALL_COLOR_G;
+ballColorB = require('./environment').BALL_COLOR_B;
 ballX = require('./environment').BALL_X;
 ballY = require('./environment').BALL_Y;
 osc = require('osc');
@@ -144,25 +146,25 @@ oscPort.on('ready', function() {
 			balls.forEach(function(ball){
 				ball.x += vector.x;
 				ball.y += vector.y;
-				if (ball.x > config.xmax){
+				if (southExit(ball)){
 					if (device == 'S')
 						sendNorth(ball);
 					else
 						sendSouth(ball);
 				}
-				else if (ball.x < 0){
+				else if (northExit(ball)){
 					if (device == 'N')
 						sendSouth(ball);
 					else
 						sendNorth(ball);
 				}
-				else if (ball.y > config.ymax){
+				else if (westExit(ball)){
 					if (device == 'W')
 						sendEast(ball);
 					else
 						sendWest(ball);
 				}
-				else if (ball.y < 0){
+				else if (eastExit(ball)){
 					if (device == 'E')
 						sendWest(ball);
 					else
@@ -172,6 +174,22 @@ oscPort.on('ready', function() {
 					newBalls.push(ball);
 			});
 			balls = newBalls;
+
+			function eastExit(ball) {
+				return ball.x < 0;
+			}
+
+			function westExit(ball) {
+				return ball.x > config.xmax;
+			}
+
+			function northExit(ball) {
+				return ball.y < 0;
+			}
+
+			function southExit(ball) {
+				return ball.y > config.ymax;
+			}
 		}
 
 		joystick.on('press', function(direction) {
