@@ -1,7 +1,6 @@
 
 SenseHat = require('node-sense-hat');
 serverUri = require('./environment').SERVER_URI;
-serverPort = require('./environment').SERVER_PORT;
 JoystickLib = SenseHat.Joystick;
 matrix = SenseHat.Leds;
 config = {
@@ -11,7 +10,7 @@ config = {
 
 
 oscClient = new osc.WebSocketPort({
-    url: `ws://${serverUri}:${serverPort}`, // URL to your Web Socket server.
+    url: serverUri, // URL to your Web Socket server.
     metadata: true
 });
 oscClient.open();
