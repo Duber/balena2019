@@ -2,6 +2,9 @@
 SenseHat = require('node-sense-hat');
 serverUri = require('./environment').SERVER_URI;
 device = require('./environment').DEVICE;
+ballColor = require('./environment').BALL_COLOR;
+ballX = require('./environment').BALL_X;
+ballY = require('./environment').BALL_Y;
 osc = require('osc');
 JoystickLib = SenseHat.Joystick;
 matrix = SenseHat.Leds;
@@ -14,8 +17,8 @@ function initialBalls(){
 	return [
 		{
 			color: [ 255, 0, 0 ],
-			x: 0,
-			y: 0
+			x: ballX,
+			y: ballY
 		} 
 	]
 }
@@ -142,16 +145,28 @@ oscPort.on('ready', function() {
 				ball.x += vector.x;
 				ball.y += vector.y;
 				if (ball.x > config.xmax){
-					sendSouth(ball);
+					if (device == 'S')
+						sendNorth(ball);
+					else
+						sendSouth(ball);
 				}
 				else if (ball.x < 0){
-					sendNorth(ball);
+					if (device == 'N')
+						sendSouth(ball);
+					else
+						sendNorth(ball);
 				}
 				else if (ball.y > config.ymax){
-					sendWest(ball);
+					if (device == 'W')
+						sendEast(ball);
+					else
+						sendWest(ball);
 				}
 				else if (ball.y < 0){
-					sendEast(ball);
+					if (device == 'E')
+						sendWest(ball);
+					else
+						sendEast(ball);
 				}
 				else 
 					newBalls.push(ball);
