@@ -32,6 +32,42 @@ balls = [
 	}
 ];
 
+function sendNorth(ball){
+
+}
+
+function sendSouth(ball){
+	
+}
+
+function sendEast(ball){
+	
+}
+
+function sendWest(ball){
+	
+}
+
+function recieveFromNorth(ball){
+	ball.x = 0;
+	balls.push(ball);
+}
+
+function recieveFromSouth(ball){
+	ball.x = 7;
+	balls.push(ball);
+}
+
+function recieveFromEast(ball){
+	ball.y = 0;
+	balls.push(ball);
+}
+
+function recieveFromWest(ball){
+	ball.y = 7;
+	balls.push(ball);
+}
+
 function drawBall() {
 	matrix.clear();
 
@@ -71,10 +107,26 @@ JoystickLib.getJoystick()
 
 	function processMovement(direction){
 		vector = directionToVector(direction);
+		newBalls = [];
 		balls.forEach(function(ball){
 			ball.x += vector.x;
 			ball.y += vector.y;
+			if (ball.x > config.xmax){
+				sendNorth(ball);
+			}
+			else if (ball.x < 0){
+				sendSouth(ball);
+			}
+			else if (ball.y > config.ymax){
+				sendEast(ball);
+			}
+			else if (ball.y < 0){
+				sendWest(ball);
+			}
+			else 
+				newBalls.push(ball);
 		});
+		balls = newBalls;
 	}
 
 	// Let's register for some events
