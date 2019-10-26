@@ -72,7 +72,7 @@ function receiveFromSouth(ball){
 	balls.push(ball);
 }
 
-function recieveFromEast(ball){
+function receiveFromEast(ball){
 	switch(device){
 		case "N":
 			ball.x = 7;
@@ -87,7 +87,7 @@ function recieveFromEast(ball){
 	balls.push(ball);
 }
 
-function recieveFromWest(ball){
+function receiveFromWest(ball){
 	switch(device){
 		case "N":
 			ball.x = 0;
