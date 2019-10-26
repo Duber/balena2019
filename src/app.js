@@ -24,22 +24,20 @@ JoystickLib = SenseHat.Joystick;
 // And the handle to the LED matrix
 matrix = SenseHat.Leds;
 
-balls = [ 
-	{
-		color: [ 255, 0, 0 ],
-		x: 0,
-		y: 0
-	} 
-];
-
-function reset(){
-	balls = [ 	
+function initialBalls(){
+	return [
 		{
 			color: [ 255, 0, 0 ],
 			x: 0,
 			y: 0
-		}  
-	];
+		} 
+	]
+}
+
+balls = initialBalls();
+
+function reset(){
+	balls = initialBalls();
 }
 
 function sendNorth(ball){
