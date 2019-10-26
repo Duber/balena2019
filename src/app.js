@@ -67,7 +67,7 @@ oscPort.on('message', function(oscMsg) {
 	if (oscMsg.args.destination != device){
 		return;
 	}
-	switch(oscMsg.address){
+	switch(oscMsg.args.origin){
 		case "N":
 			receiveFromNorth(oscMsg.args.ball)
 			return;
@@ -86,9 +86,10 @@ oscPort.on('message', function(oscMsg) {
 oscPort.on('ready', function() {
 	function send(dest, ball){
 		oscPort.send({
-			address: device,
+			address: '/patata',
 			args: [
 				{
+					origin: device,
 					destination: dest,
 					ball: ball
 				}
