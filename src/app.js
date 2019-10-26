@@ -15,6 +15,26 @@ const oscPort = new osc.WebSocketPort({
 	metadata: true
   });
 oscPort.open();
+
+oscPort.on('message', function(oscMsg) {
+	if (oscMsg.args.destination != device){
+		return;
+	}
+	switch(oscMsg.address){
+		case "N":
+			receiveFromNorth(oscMsg.args.ball)
+			return;
+		case "S":
+			receiveFromSouth(oscMsg.args.ball)
+			return;
+		case "E":
+			receiveFromEast(oscMsg.args.ball)
+			return;
+		case "W":
+			receiveFromWest(oscMsg.args.ball)
+			return;
+	}
+});
    
 oscPort.on('ready', function() {
 	function send(destination, ball){
