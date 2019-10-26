@@ -1,6 +1,7 @@
 var WebSocket = require('ws');
 var messageTypes = require('./messaging').messageTypes;
 var serverPort = require('./environment').SERVER_PORT;
+var osc = require('osc');
 
 module.exports.run = function() {
     console.log('Starting server on port ' + serverPort);
@@ -28,18 +29,18 @@ module.exports.run = function() {
       }
     });
 
-    wss.on('connection', function connection(ws) {
-        ws.on('message', function incoming(message) {
-            if (message.forward) return;
 
-            if (message.type === messageTypes.INIT) {
-                console.log('Device ' + message.device + 'has joined');
-            }
-            
-            // broadcast. Is this ok?
-            ws.send(Object.assign(message, {
-                forward: true
-            }));
+    // Listen for Web Socket connections.
+    wss.on('connection', function (socket) {
+        var socketPort = new osc.WebSocketPort({
+            socket: socket,
+            metadata: true
         });
+
+        socketPort.on('message', function (oscMsg) {
+            console.log('An OSC Message was received!', oscMsg);
+            socketPort.send(oscMsg);
+        });
+
     });
 };
