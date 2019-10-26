@@ -1,12 +1,10 @@
-var WebSocket = require('ws');
-var messageTypes = require('./messaging').messageTypes;
-var serverPort = require('./environment').SERVER_PORT;
+const WebSocket = require('ws');
 
-module.exports.run = function() {
-    console.log('Starting server on port ' + serverPort);
+module.exports.run = function(port) {
+    console.log('Starting server on port ' + port);
 
     const wss = new WebSocket.Server({
-      port: serverPort,
+      port: port,
       perMessageDeflate: {
         zlibDeflateOptions: {
           // See zlib defaults.

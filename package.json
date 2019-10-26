@@ -4,8 +4,10 @@
   "description": "A base application on which to start building your sense-hat project!",
   "main": "src/server.js",
   "scripts": {
-    "server": "node src/index.js",
-    "message": "node src/client.js"
+    "start": "node run-app.js",
+    "server": "node run-server.js",
+    "simulator": "node run-simulator.js",
+    "message": "node run-message.js"
   },
   "repository": {
     "type": "git",

@@ -1,23 +1,39 @@
-serverUri = require('./environment').SERVER_URI || 'ws://10.10.169.145:8080';
-device = require('./environment').DEVICE;
-var WebSocket = require('ws');
+const WebSocket = require('ws');
 
-var runMessage = {
-    "origin":"S",
-    "destination":"N",
-    "ball": {
-        "color":[0,255,0],
-        "x":5,
-        "y":-1
-    }
-};
+module.exports = class Client {
+  constructor(serverUri) {
+    this.serverUri = serverUri;
+  }
 
-const ws = new WebSocket(serverUri);
+  connect() {
+    this.ws = new WebSocket(this.serverUri);
+    return this;
+  }
 
-ws.on('open', function open() {
-  ws.send(JSON.stringify(runMessage));
-});
+  send(payload) {
+    this.checkConnection();
+    this.ws.send(JSON.stringify(payload));
+    return this;
+  }
 
-ws.on('message', function incoming(data) {
-  console.log('Received message', data);
-});
+  onOpen(callback) {
+    this.checkConnection();
+    this.ws.on('open', () => {
+      callback();
+    });
+    return this;
+  }
+
+  onMessage(callback) {
+    this.checkConnection();
+    this.ws.on('message', (data) => {
+      const payload = JSON.parse(data);
+      callback(payload);
+    });
+    return this;
+  }
+
+  checkConnection() {
+    if (!this.ws) throw new Error('Websocket is not connected');
+  }
+}
