@@ -17,11 +17,12 @@ const oscPort = new osc.WebSocketPort({
 oscPort.open();
    
 oscPort.on('ready', function() {
-	function send(ball){
+	function send(destination, ball){
 		oscPort.send({
 			address: device,
 			args: [
 				{
+					destination: dest,
 					ball: ball
 				}
 			]
@@ -45,19 +46,19 @@ oscPort.on('ready', function() {
 	}
 	
 	function sendNorth(ball){
-		send(ball);
+		send('N', ball);
 	}
 	
 	function sendSouth(ball){
-		send(ball);
+		send('S', ball);
 	}
 	
 	function sendEast(ball){
-		send(ball);
+		send('E', ball);
 	}
 	
 	function sendWest(ball){
-		send(ball);
+		send('W', ball);
 	}
 	
 	function receiveFromNorth(ball){
