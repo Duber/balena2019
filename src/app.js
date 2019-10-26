@@ -64,7 +64,7 @@ const oscPort = new osc.WebSocketPort({
 oscPort.open();
 
 oscPort.on('message', function(oscMsg) {
-	msg = JSON.parse(oscMsg.args[0])
+	msg = JSON.parse(oscMsg.args[0].value)
 	if (msg.destination != device){
 		return;
 	}
