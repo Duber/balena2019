@@ -1,14 +1,14 @@
-serverUri = require('./environment').SERVER_URI || 'ws://localhost:8080';
+serverUri = require('./environment').SERVER_URI || 'ws://10.10.169.145:8080';
 device = require('./environment').DEVICE;
 var WebSocket = require('ws');
 
 var runMessage = {
     "origin":"S",
-    "destination":"S",
+    "destination":"N",
     "ball": {
-        "color":[255,0,0],
-        "x":8,
-        "y":1
+        "color":[0,255,0],
+        "x":5,
+        "y":-1
     }
 };
 

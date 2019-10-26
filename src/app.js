@@ -67,13 +67,13 @@ function receiveFromNorth(ball){
 				ball.y = 0;
 			else
 				ball.y = 7;
-			return;
+			break;
 		case "E":
 			ball.x = 0;
-			return;
+			break;
 		case "W":
 			ball.x = 7;
-			return;
+			break;
 	}
 	balls.push(ball);
 }
@@ -85,13 +85,13 @@ function receiveFromSouth(ball){
 				ball.y = 0
 			else
 				ball.y = 7;
-			return;
+			break;
 		case "E":
 			ball.x = 7;
-			return;
+			break;
 		case "W":
 			ball.x = 0;
-			return;
+			break;
 	}
 	balls.push(ball);
 }
@@ -100,16 +100,16 @@ function receiveFromEast(ball){
 	switch(device){
 		case "N":
 			ball.x = 7;
-			return;
+			break;
 		case "S":
 			ball.x = 0;
-			return;
+			break;
 		case "W":
 			if (northExit(ball))
 				ball.y = 0;
 			else
 				ball.y = 7;
-			return;
+			break;
 	}
 	balls.push(ball);
 }
