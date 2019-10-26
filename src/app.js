@@ -67,18 +67,18 @@ oscPort.on('message', function(oscMsg) {
 	if (oscMsg.args.destination != device){
 		return;
 	}
-	switch(oscMsg.args.origin){
+	switch(oscMsg.args[0].origin){
 		case "N":
-			receiveFromNorth(oscMsg.args.ball)
+			receiveFromNorth(oscMsg.args[0].ball)
 			return;
 		case "S":
-			receiveFromSouth(oscMsg.args.ball)
+			receiveFromSouth(oscMsg.args[0].ball)
 			return;
 		case "E":
-			receiveFromEast(oscMsg.args.ball)
+			receiveFromEast(oscMsg.args[0].ball)
 			return;
 		case "W":
-			receiveFromWest(oscMsg.args.ball)
+			receiveFromWest(oscMsg.args[0].ball)
 			return;
 	}
 });
