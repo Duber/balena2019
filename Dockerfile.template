@@ -1,4 +1,4 @@
-FROM balenalib/raspberrypi3-node:6-build
+FROM balenalib/raspberrypi3-node:8-build
 
 # Move into a working directory
 WORKDIR /usr/src/app
