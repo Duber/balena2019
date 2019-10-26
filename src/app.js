@@ -24,13 +24,17 @@ JoystickLib = SenseHat.Joystick;
 // And the handle to the LED matrix
 matrix = SenseHat.Leds;
 
-balls = [
-	ball = {
-		color: [ 255, 0, 0 ],
-		x: 0,
-		y: 0
-	}
-];
+initialBall = {
+	color: [ 255, 0, 0 ],
+	x: 0,
+	y: 0
+}
+
+balls = [ initialBall ];
+
+function reset(){
+	balls = [ initialBall ];
+}
 
 function sendNorth(ball){
 
@@ -106,6 +110,9 @@ JoystickLib.getJoystick()
 	}
 
 	function processMovement(direction){
+		if (direction == 'click'){
+			return reset();
+		}
 		vector = directionToVector(direction);
 		newBalls = [];
 		balls.forEach(function(ball){
@@ -134,7 +141,7 @@ JoystickLib.getJoystick()
 	// When the joystick is pressed, the below function will execute,
 	// with the direction variable being one of 'up', 'down', 'left' or 'right'
 	joystick.on('press', function(direction) {
-		console.log('The joystick was pressed ' + direction);
+		console.log('The joystick was pressed ' + direction);		
 		processMovement(direction);
 	});
 
