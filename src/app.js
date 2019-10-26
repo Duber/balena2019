@@ -1,28 +1,23 @@
-// This file is meant to be used as a starting point for a sense-hat application
-// using node-sense-hat. It first sets up a ball to be drawn, at a specific
-// position with a specific color.
-// A function to draw the said ball is then created, and also setup to be called
-// once every 50ms.
-// We then register for events on the joystick, and use the information passed
-// into the event handlers to move the ball in the same direction that the
-// joystick is pressed.
 
-// For more information about the APIs, see:
-//  * https://github.com/resin-io-playground/node-sense-hat
-//  * https://github.com/aonghusonia/sense-hat-led
-//  * https://github.com/resin-io-playground/sense-joystick
 SenseHat = require('node-sense-hat');
-
+serverUri = require('./environment').SERVER_URI;
+serverPort = require('./environment').SERVER_PORT;
+JoystickLib = SenseHat.Joystick;
+matrix = SenseHat.Leds;
 config = {
 	xmax: 7,
 	ymax: 7 
 };
 
-// Let's pull out the joystick library
-JoystickLib = SenseHat.Joystick;
 
-// And the handle to the LED matrix
-matrix = SenseHat.Leds;
+oscClient = new osc.WebSocketPort({
+    url: `ws://${serverUri}:${serverPort}`, // URL to your Web Socket server.
+    metadata: true
+});
+oscClient.open();
+oscClient.on("message", function (ball) {
+    recieveFromNorth(ball);
+});
 
 function initialBalls(){
 	return [
@@ -41,19 +36,19 @@ function reset(){
 }
 
 function sendNorth(ball){
-
+	oscClient.send(ball);
 }
 
 function sendSouth(ball){
-	
+	oscClient.send(ball);
 }
 
 function sendEast(ball){
-	
+	oscClient.send(ball);
 }
 
 function sendWest(ball){
-	
+	oscClient.send(ball);
 }
 
 function recieveFromNorth(ball){
