@@ -144,16 +144,16 @@ ws.on('message', function incoming(data) {
 	switch(msg.origin){
 		case "N":
 			receiveFromNorth(msg.ball)
-			return;
+			break;
 		case "S":
 			receiveFromSouth(msg.ball)
-			return;
+			break;
 		case "E":
 			receiveFromEast(msg.ball)
-			return;
+			break;
 		case "W":
 			receiveFromWest(msg.ball)
-			return;
+			break;
 	}
 });
 
