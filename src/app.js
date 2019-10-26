@@ -15,13 +15,34 @@ const oscPort = new osc.WebSocketPort({
 	metadata: true
   });
 oscPort.open();
+
+oscPort.on('message', function(oscMsg) {
+	if (oscMsg.args.destination != device){
+		return;
+	}
+	switch(oscMsg.address){
+		case "N":
+			receiveFromNorth(oscMsg.args.ball)
+			return;
+		case "S":
+			receiveFromSouth(oscMsg.args.ball)
+			return;
+		case "E":
+			receiveFromEast(oscMsg.args.ball)
+			return;
+		case "W":
+			receiveFromWest(oscMsg.args.ball)
+			return;
+	}
+});
    
 oscPort.on('ready', function() {
-	function send(ball){
+	function send(destination, ball){
 		oscPort.send({
 			address: device,
 			args: [
 				{
+					destination: dest,
 					ball: ball
 				}
 			]
@@ -45,19 +66,19 @@ oscPort.on('ready', function() {
 	}
 	
 	function sendNorth(ball){
-		send(ball);
+		send('N', ball);
 	}
 	
 	function sendSouth(ball){
-		send(ball);
+		send('S', ball);
 	}
 	
 	function sendEast(ball){
-		send(ball);
+		send('E', ball);
 	}
 	
 	function sendWest(ball){
-		send(ball);
+		send('W', ball);
 	}
 	
 	function receiveFromNorth(ball){
