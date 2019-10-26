@@ -210,64 +210,64 @@ ws.on('open', function open() {
 					switch(device){
 						case "N":
 							sendSouth(ball);
-							return;
+							break;
 						case "S":
 							sendNorth(ball);
-							return;
+							break;
 						case "E":
 							sendWest(ball);
-							return;
+							break;
 						case "W":
 							sendEast(ball);
-							return;
+							break;
 					}
 				}
 				else if (northExit(ball)){
 					switch(device){
 						case "N":
 							sendSouth(ball);
-							return;
+							break;
 						case "S":
 							sendNorth(ball);
-							return;
+							break;
 						case "E":
 							sendWest(ball);
-							return;
+							break;
 						case "W":
 							sendEast(ball);
-							return;
+							break;
 					}
 				}
 				else if (westExit(ball)){
 					switch(device){
 						case "N":
 							sendEast(ball);
-							return;
+							break;
 						case "S":
 							sendWest(ball);
-							return;
+							break;
 						case "E":
 							sendSouth(ball);
-							return;
+							break;
 						case "W":
 							sendNorth(ball);
-							return;
+							break;
 					}
 				}
 				else if (eastExit(ball)){
 					switch(device){
 						case "N":
 							sendWest(ball);
-							return;
+							break;
 						case "S":
 							sendEast(ball);
-							return;
+							break;
 						case "E":
 							sendNorth(ball);
-							return;
+							break;
 						case "W":
 							sendSouth(ball);
-							return;
+							break;
 					}
 				}
 				else 
