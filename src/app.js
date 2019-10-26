@@ -42,10 +42,29 @@ function drawBall() {
 interval = 50;
 setInterval(drawBall, interval);
 
+function eastExit(ball) {
+	return ball.x < 0;
+}
+
+function westExit(ball) {
+	return ball.x > config.xmax;
+}
+
+function northExit(ball) {
+	return ball.y < 0;
+}
+
+function southExit(ball) {
+	return ball.y > config.ymax;
+}
+
 function receiveFromNorth(ball){
 	switch(device){
 		case "S":
-			ball.y = 0;
+			if (northExit(ball))
+				ball.y = 0;
+			else
+				ball.y = 7;
 			return;
 		case "E":
 			ball.x = 0;
@@ -60,7 +79,10 @@ function receiveFromNorth(ball){
 function receiveFromSouth(ball){
 	switch(device){
 		case "N":
-			ball.y = 0;
+			if (northExit(ball))
+				ball.y = 0
+			else
+				ball.y = 7;
 			return;
 		case "E":
 			ball.x = 7;
@@ -81,7 +103,10 @@ function receiveFromEast(ball){
 			ball.x = 0;
 			return;
 		case "W":
-			ball.y = 0;
+			if (northExit(ball))
+				ball.y = 0;
+			else
+				ball.y = 7;
 			return;
 	}
 	balls.push(ball);
@@ -96,7 +121,10 @@ function receiveFromWest(ball){
 			ball.x = 7;
 			return;
 		case "E":
-			ball.y = 0;
+			if (northExit(ball))
+				ball.y = 0;
+			else
+				ball.y = 7;
 			return;
 	}	
 	balls.push(ball);
@@ -254,22 +282,6 @@ oscPort.on('ready', function() {
 					newBalls.push(ball);
 			});
 			balls = newBalls;
-
-			function eastExit(ball) {
-				return ball.x < 0;
-			}
-
-			function westExit(ball) {
-				return ball.x > config.xmax;
-			}
-
-			function northExit(ball) {
-				return ball.y < 0;
-			}
-
-			function southExit(ball) {
-				return ball.y > config.ymax;
-			}
 		}
 
 		joystick.on('press', function(direction) {
