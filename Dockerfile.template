@@ -14,4 +14,4 @@ RUN npm install
 COPY . ./
 
 # Execute our code when the continer starts up
-CMD node src/app.js
+CMD node src/index.js
