@@ -10,6 +10,53 @@ config = {
 	ymax: 7 
 };
 
+function initialBalls(){
+	return [
+		{
+			color: [ 255, 0, 0 ],
+			x: 0,
+			y: 0
+		} 
+	]
+}
+
+balls = initialBalls();
+
+function reset(){
+	balls = initialBalls();
+}
+
+function drawBall() {
+	matrix.clear();
+
+	balls.forEach(function(ball){
+		matrix.setPixel(ball.x, ball.y, ball.color);
+	});
+}
+
+interval = 50;
+setInterval(drawBall, interval);
+
+function receiveFromNorth(ball){
+	ball.x = 0;
+	balls.push(ball);
+}
+
+function receiveFromSouth(ball){
+	ball.x = 7;
+	balls.push(ball);
+}
+
+function recieveFromEast(ball){
+	ball.y = 0;
+	balls.push(ball);
+}
+
+function recieveFromWest(ball){
+	ball.y = 7;
+	balls.push(ball);
+}
+
 const oscPort = new osc.WebSocketPort({
 	url: serverUri, // URL to your Web Socket server.
 	metadata: true
@@ -48,22 +95,6 @@ oscPort.on('ready', function() {
 			]
 		});
 	}
-
-	function initialBalls(){
-		return [
-			{
-				color: [ 255, 0, 0 ],
-				x: 0,
-				y: 0
-			} 
-		]
-	}
-	
-	balls = initialBalls();
-	
-	function reset(){
-		balls = initialBalls();
-	}
 	
 	function sendNorth(ball){
 		send('N', ball);
@@ -81,50 +112,8 @@ oscPort.on('ready', function() {
 		send('W', ball);
 	}
 	
-	function receiveFromNorth(ball){
-		ball.x = 0;
-		balls.push(ball);
-	}
-	
-	function receiveFromSouth(ball){
-		ball.x = 7;
-		balls.push(ball);
-	}
-	
-	function recieveFromEast(ball){
-		ball.y = 0;
-		balls.push(ball);
-	}
-	
-	function recieveFromWest(ball){
-		ball.y = 7;
-		balls.push(ball);
-	}
-	
-	function drawBall() {
-		matrix.clear();
-	
-		balls.forEach(function(ball){
-			matrix.setPixel(ball.x, ball.y, ball.color);
-		});
-	}
-	
-	// We want the ball to be constantly redrawn, it will be changing
-	// location after all!
-	
-	// Call our drawing function every 50ms
-	interval = 50;
-	setInterval(drawBall, interval);
-	
-	// Now that we have setup our drawing function, let's get a "handle" to the
-	// joystick on the sense-hat, which is a way to receive events when the
-	// joystick is used
 	JoystickLib.getJoystick()
 	.then(function(joystick) {
-		// The joystick handle is defined inside of this function
-	
-		// Given a direction, return the vector of change that this direction
-		// corresponds to
 		function directionToVector(direction) {
 			switch(direction) {
 				case 'up':
@@ -164,18 +153,12 @@ oscPort.on('ready', function() {
 			});
 			balls = newBalls;
 		}
-	
-		// Let's register for some events
-	
-		// When the joystick is pressed, the below function will execute,
-		// with the direction variable being one of 'up', 'down', 'left' or 'right'
+
 		joystick.on('press', function(direction) {
 			console.log('The joystick was pressed ' + direction);		
 			processMovement(direction);
 		});
 	
-		// When the joystick is held, the below function will execute,
-		// with the direction variable being one of 'up', 'down', 'left' or 'right'
 		joystick.on('hold', function(direction) {
 			console.log('The joystick is being held ' + direction);
 			processMovement(direction);
