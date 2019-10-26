@@ -1,7 +1,6 @@
 var WebSocket = require('ws');
 var messageTypes = require('./messaging').messageTypes;
 var serverPort = require('./environment').SERVER_PORT;
-var osc = require('osc');
 
 module.exports.run = function() {
     console.log('Starting server on port ' + serverPort);
@@ -29,18 +28,16 @@ module.exports.run = function() {
       }
     });
 
-
     // Listen for Web Socket connections.
     wss.on('connection', function (socket) {
-        var socketPort = new osc.WebSocketPort({
-            socket: socket,
-            metadata: true
+      socket.on('message', function (msg) {
+            console.log('A message was received!', msg);
+            
+            wss.clients.forEach(function each(client) {
+              if (client !== wss && client.readyState === WebSocket.OPEN) {
+                client.send(msg);
+              }
+            });
         });
-
-        socketPort.on('message', function (oscMsg) {
-            console.log('An OSC Message was received!', oscMsg);
-            socketPort.send(oscMsg);
-        });
-
     });
 };

@@ -1,6 +1,6 @@
 serverUri = require('./environment').SERVER_URI || 'ws://localhost:8080';
 device = require('./environment').DEVICE;
-osc = require('osc');
+var WebSocket = require('ws');
 
 var runMessage = {
     "origin":"S",
@@ -12,24 +12,12 @@ var runMessage = {
     }
 };
 
-const oscPort = new osc.WebSocketPort({
-	url: serverUri,
-	metadata: true
-  });
-oscPort.open();
+const ws = new WebSocket(serverUri);
 
-oscPort.on('message', function(oscMsg) {
-	console.log(`Received ${oscMsg.args[0].value}`);
+ws.on('open', function open() {
+  ws.send(JSON.stringify(runMessage));
 });
 
-oscPort.on('ready', function() {
-    oscPort.send({
-        address: '/patata',
-        args: [
-            {
-                type: 's',
-                value: JSON.stringify(runMessage)
-            }
-        ]
-	});	
+ws.on('message', function incoming(data) {
+  console.log('Received message', data);
 });

@@ -7,7 +7,9 @@ ballColorG = require('./environment').BALL_COLOR_G;
 ballColorB = require('./environment').BALL_COLOR_B;
 ballX = require('./environment').BALL_X;
 ballY = require('./environment').BALL_Y;
-osc = require('osc');
+var WebSocket = require('ws');
+
+
 JoystickLib = SenseHat.Joystick;
 matrix = SenseHat.Leds;
 config = {
@@ -130,14 +132,12 @@ function receiveFromWest(ball){
 	balls.push(ball);
 }
 
-const oscPort = new osc.WebSocketPort({
-	url: serverUri, // URL to your Web Socket server.
-	metadata: true
-  });
-oscPort.open();
+const ws = new WebSocket(serverUri);
 
-oscPort.on('message', function(oscMsg) {
-	msg = JSON.parse(oscMsg.args[0].value)
+
+ws.on('message', function incoming(data) {
+  console.log('Received message', data);
+  msg = JSON.parse(data)
 	if (msg.destination != device){
 		return;
 	}
@@ -156,22 +156,14 @@ oscPort.on('message', function(oscMsg) {
 			return;
 	}
 });
-   
-oscPort.on('ready', function() {
+
+ws.on('open', function open() {
 	function send(dest, ball){
-		oscPort.send({
-			address: '/patata',
-			args: [
-				{
-					type: 's',
-					value: JSON.stringify({
-						origin: device,
-						destination: dest,
-						ball: ball
-					})
-				}
-			]
-		});
+		ws.send(JSON.stringify({
+			origin: device,
+			destination: dest,
+			ball: ball
+		}));
 	}
 	
 	function sendNorth(ball){
