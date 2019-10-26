@@ -84,7 +84,7 @@ oscPort.on('message', function(oscMsg) {
 });
    
 oscPort.on('ready', function() {
-	function send(destination, ball){
+	function send(dest, ball){
 		oscPort.send({
 			address: device,
 			args: [
