@@ -1,5 +1,5 @@
-const joystick = require('./joystick');
-const display = require('./display');
+const { createJoystick } = require('./joystick');
+const { createDisplay } = require('./display');
 const env = require('./environment');
 const Client = require('./client');
 const { ballExitAction, actionTypes } = require('./actions');
@@ -7,12 +7,12 @@ const { ballExitAction, actionTypes } = require('./actions');
 module.exports = class App {
 	constructor() {
 		this.device = env.DEVICE;
-		this.display = display.get();
-		this.joystick = joystick;
+		this.display = createDisplay();
+		this.joystick = createJoystick();
 		this.config = {
 			xmax: 7,
 			ymax: 7,
-			color: [+env.BALL_COLOR_R, +env.BALL_COLOR_G, +env.BALL_COLOR_B],
+			color: env.BALL_COLOR
 		};
 	}
 
@@ -29,7 +29,7 @@ module.exports = class App {
 				this.messageReceived(message);
 			});
 
-		this.interval = setInterval(() => this.drawBall(), +env.RATE);
+		this.interval = setInterval(() => this.drawBall(), env.RATE);
 	}
 
 	stop() {
@@ -43,8 +43,8 @@ module.exports = class App {
 		return [
 			{
 				color: this.config.color,
-				x: +env.BALL_X,
-				y: +env.BALL_Y
+				x: env.BALL_X,
+				y: env.BALL_Y
 			}
 		]
 	}
@@ -58,17 +58,14 @@ module.exports = class App {
 	}
 
 	listenJoystick() {
-		this.joystick.get()
-			.then((js) => {
-				js.on('press', (direction) => {
-					console.log('The joystick was pressed ' + direction);
-					this.processMovement(direction);
-				});
-
-				js.on('hold', (direction) => {
-					console.log('The joystick is being held ' + direction);
-					this.processMovement(direction);
-				});
+		this.joystick.listen()
+			.onPress((direction) => {
+				console.log('The joystick was pressed ' + direction);
+				this.processMovement(direction);
+			})
+			.onHold((direction) => {
+				console.log('The joystick is being held ' + direction);
+				this.processMovement(direction);
 			});
 	}
 
@@ -199,7 +196,7 @@ module.exports = class App {
 	}
 
 	processMovement(direction) {
-		if (direction == 'click') {
+		if (direction === 'enter') {
 			return this.reset();
 		}
 

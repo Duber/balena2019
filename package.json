@@ -1,8 +1,7 @@
 {
-  "name": "sense-hat-base-application",
+  "name": "balena-2019-hackathon",
   "version": "0.0.1",
-  "description": "A base application on which to start building your sense-hat project!",
-  "main": "src/server.js",
+  "description": "Demo application done in balena hackathon session in 2019",
   "scripts": {
     "start": "node run-app.js",
     "server": "node run-server.js",
@@ -11,18 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/balena-projects/sense-hat-base-application.git"
+    "url": "git+https://github.com/Duber/balena2019.git"
   },
   "author": "Cameron Diver <cameron@resin.io>",
   "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/balena-projects/sense-hat-base-application/issues"
-  },
-  "homepage": "https://github.com/balena-projects/sense-hat-base-application#readme",
+  "homepage": "https://github.com/Duber/balena2019",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "node-sense-hat": "0.0.2",
-    "osc": "^2.3.1",
+    "pi-sense-hat": "^1.0.14",
     "ws": "^7.2.0"
   }
 }

@@ -1,23 +1,23 @@
 const env = require('./environment');
+const { create } = require('pi-sense-hat');
 
-module.exports.get = () => {
-    if (env.MODE === 'simulator') {
-        return new ConsoleDisplay();
-    } else {
-        return new Display();
-    }
+module.exports.createDisplay = () => {
+    return env.MODE === 'simulator'?
+        new ConsoleDisplay() :
+        new Display();
 };
 
 class Display {
     constructor() {
-        this.matrix = require('node-sense-hat').Leds;
+        this.senseHat = create();
     }
+
     clear() {
-        this.matrix.clear();
+        this.senseHat.setPixelColour('*', '*', 'off');
     }
 
     setPixel(x, y, color) {
-        this.matrix.setPixel(x, y, color);
+        this.senseHat.setPixelColour(x, y, color);
     }
 }
 
@@ -43,7 +43,7 @@ class ConsoleDisplay {
 
     setPixel(x, y, color) {
         // simplify colors to 1 or 0
-        const value = color[0] + color[1] + color[2] > 0 ? 1 : 0;
+        const value = color !== 'off' ? 1 : 0;
         this.display[y][x] = this.display[y][x] + value;
         this.render();
     }
@@ -53,7 +53,7 @@ class ConsoleDisplay {
             return row.join(' ');
         }).join('\n');
         if (textRender !== this.lastRender) {
-            process.stdout.write('\n\n\n\n\n\n\n'); 
+            process.stdout.write('\n\n\n\n\n\n\n');
             console.log(textRender);
             this.lastRender = textRender;
         }
