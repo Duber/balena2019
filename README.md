@@ -11,7 +11,13 @@ This app uses a web socket server to broadcast each client message to all client
 You can run locally this application in console to allow easy debugging.
 
 1. Create .env file with .env.simulatorsample content.
-2. Run `npm run simulator` command.
+2. Run `npm run simulator [DEVICE]` command. You can run the 4 devices needed in a simulator:
+```
+npm run simulator N
+npm run simulator S
+npm run simulator E
+npm run simulator W
+```
 3. Move pixel with keys. Use '.' key to simulate click.
 
 ## Send test messages to websocket server
