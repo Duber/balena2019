@@ -16,7 +16,7 @@ class Display {
     }
 
     setPixel(x, y, color) {
-        this.matrix.setPixel(x, y, color);
+        this.matrix.setPixel(y, x, color);
     }
 }
 
