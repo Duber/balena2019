@@ -1,5 +1,4 @@
 var env = require('./environment');
-const { create } = require('pi-sense-hat');
 
 module.exports.createJoystick = () => {
     return env.MODE === 'simulator'?
@@ -9,32 +8,23 @@ module.exports.createJoystick = () => {
 
 class Joystick {
     constructor() {
-        this.senseHat = create();
-        this.messageStates = {
-            release: 0,
-            press: 1,
-            hold: 2
-        };
         this.onPressListeners = [];
         this.onHoldListeners = [];
-        this.onReleaseListeners = [];
     }
 
     listen() {
-        this.senseHat.on("joystick", (message) => {
-            const key = message.key.toLower();
-            switch (message.state) {
-                case this.messageStates.release:
-                    this.onPressListeners.forEach(listener => listener(key));
-                    break;
-                case this.messageStates.press:
-                    this.onPressListeners.forEach(listener => listener(key));
-                    break;
-                case this.messageStates.hold:
-                    this.onHoldListeners.forEach(listener => listener(key));
-                    break;
-            }
-        });
+        require('node-sense-hat').Joystick.getJoystick()
+            .then((js) => {
+                this.joystick = js;
+                this.joystick.on('press', (direction) => {
+                    this.onPressListeners.forEach(listener => listener(direction));
+                });
+
+                this.joystick.on('hold', (direction) => {
+                    this.onHoldListeners.forEach(listener => listener(direction));
+                });
+            });
+
         return this;
     }
 
@@ -45,11 +35,6 @@ class Joystick {
 
     onHold(callback) {
         this.onHoldListeners.push(callback);
-        return this;
-    }
-
-    onRelease(callback) {
-        this.onReleaseListeners.push(callback);
         return this;
     }
 }
@@ -68,7 +53,7 @@ class JoystickSimulator {
             if (key.ctrl && name === 'c') {
                 process.exit();
             } else if (str === '.') { // simulate click with "."
-                name = 'enter';
+                name = 'click';
             }
             callback(name);
         });
@@ -76,10 +61,6 @@ class JoystickSimulator {
     }
 
     onHold(callback) {
-        // not implemented
-    }
-    
-    onRelease(callback) {
         // not implemented
     }
 }

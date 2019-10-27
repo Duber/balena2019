@@ -17,7 +17,9 @@
   "homepage": "https://github.com/Duber/balena2019",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "pi-sense-hat": "^1.0.14",
     "ws": "^7.2.0"
+  },
+  "devDependencies": {
+    "node-sense-hat": "0.0.2"
   }
 }

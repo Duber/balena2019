@@ -1,5 +1,4 @@
 const env = require('./environment');
-const { create } = require('pi-sense-hat');
 
 module.exports.createDisplay = () => {
     return env.MODE === 'simulator'?
@@ -9,15 +8,15 @@ module.exports.createDisplay = () => {
 
 class Display {
     constructor() {
-        this.senseHat = create();
+        this.matrix = require('node-sense-hat').Leds;
     }
 
     clear() {
-        this.senseHat.setPixelColour('*', '*', 'off');
+        this.matrix.clear();
     }
 
     setPixel(x, y, color) {
-        this.senseHat.setPixelColour(x, y, color);
+        this.matrix.setPixel(x, y, color);
     }
 }
 
@@ -43,7 +42,7 @@ class ConsoleDisplay {
 
     setPixel(x, y, color) {
         // simplify colors to 1 or 0
-        const value = color !== 'off' ? 1 : 0;
+        const value = color !== color.reduce((a,b) => a+b) > 0 ? 1 : 0;
         this.display[y][x] = this.display[y][x] + value;
         this.render();
     }

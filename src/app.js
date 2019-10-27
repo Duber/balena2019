@@ -17,7 +17,7 @@ module.exports = class App {
 	}
 
 	start() {
-		this.balls = this.reset();
+		this.reset();
 
 		this.client = new Client(env.SERVER_URI)
 			.connect()
@@ -40,7 +40,7 @@ module.exports = class App {
 	}
 
 	reset() {
-		return [
+		this.balls = [
 			{
 				color: this.config.color,
 				x: env.BALL_X,
@@ -196,7 +196,7 @@ module.exports = class App {
 	}
 
 	processMovement(direction) {
-		if (direction === 'enter') {
+		if (direction === 'click') {
 			return this.reset();
 		}
 
