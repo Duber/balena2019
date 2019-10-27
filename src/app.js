@@ -22,6 +22,7 @@ module.exports = class App {
 		this.client = new Client(env.SERVER_URI)
 			.connect()
 			.onOpen(() => {
+				console.log('Connected');
 				this.listenJoystick();
 			})
 			.onMessage((message) => {
@@ -72,6 +73,7 @@ module.exports = class App {
 	messageReceived(message) {
 		if (message.type !== actionTypes.BALL_EXIT ||
 			message.destination !== this.device) {
+			console.log('Discarded message', JSON.stringify(message));
 			return;
 		}
 
